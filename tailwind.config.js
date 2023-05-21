@@ -5,6 +5,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+
   theme: {
     extend: {
       fontFamily: {
@@ -63,6 +64,6 @@ module.exports = {
         stripes: '100% 8px',
       },
     },
-    plugins: [],
+    plugins: [require('@tailwindcss/forms')],
   },
 }
