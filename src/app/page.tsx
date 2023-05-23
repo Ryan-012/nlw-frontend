@@ -1,11 +1,10 @@
 import { EmptyMemories } from '@/components/EmptyMemories'
+import { MemoryButton } from '@/components/MemoryButton'
 import { api } from '@/lib/api'
 import dayjs from 'dayjs'
 import ptBr from 'dayjs/locale/pt-br'
-import { ArrowRight } from 'lucide-react'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
-import Link from 'next/link'
 dayjs.locale(ptBr)
 
 interface Memory {
@@ -45,14 +44,10 @@ export default async function Home() {
               className="aspect-video w-full rounded-lg object-cover"
               alt=""
             />
-            <p className="text-lg leading-relaxed text-gray-100"></p>
-            <Link
-              className="flex items-center gap-2 text-sm text-gray-200 hover:text-gray-100"
-              href={`/memories/${memory.id}`}
-            >
-              Ler mais
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <p className="text-lg leading-relaxed text-gray-100">
+              {memory.excerpt}
+            </p>
+            <MemoryButton memoryId={memory.id} token={token} />
           </div>
         )
       })}
