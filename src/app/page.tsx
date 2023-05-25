@@ -1,37 +1,45 @@
+'use client'
 import { EmptyMemories } from '@/components/EmptyMemories'
 import { MemoryButton } from '@/components/MemoryButton'
 import { api } from '@/lib/api'
 import dayjs from 'dayjs'
 import ptBr from 'dayjs/locale/pt-br'
-import { cookies } from 'next/headers'
+import Cookie from 'js-cookie'
 import Image from 'next/image'
+import { Memory } from '../interfaces/Memory'
+import { useContext, useEffect } from 'react'
+import { MemoriesContext } from '@/contexts/Memories'
+import { MemoriesContextValue } from '@/interfaces/contexts/Memories'
+
 dayjs.locale(ptBr)
 
-interface Memory {
-  id: string
-  coverUrl: string
-  excerpt: string
-  createdAt: string
-}
-
 export default async function Home() {
-  const isAuthenticated = cookies().has('token')
+  const token = Cookie.get('token')
+  const { memoriesData, setMemoriesData } = useContext(MemoriesContext)
+  // const fetchMemories = await api.get('/memories', {
+  // headers: {
+  // Authorization: `Bearer ${token}`,
+  // },
+  // })
+  // const memories = fetchMemories.data
+  // useEffect(() => {
+  // setMemoriesData([...memoriesData, memories])
+  // fetchMemories()
+  // }, [])
 
-  if (!isAuthenticated) return <EmptyMemories />
+  async function handleDeleteMemory(memoryId: string) {
+    await api.delete(`/memories/${memoryId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  }
 
-  const token = cookies().get('token')?.value
-  const response = await api.get('/memories', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  const memories: Memory[] = response.data
-
-  if (memories.length === 0) return <EmptyMemories />
+  if (!token || memoriesData.length === 0) return <EmptyMemories />
 
   return (
     <div className="flex flex-col gap-10 p-8">
-      {memories.map((memory) => {
+      {memoriesData.map((memory) => {
         return (
           <div key={memory.id} className="space-y-4">
             <time className="flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-5 before:bg-gray-50">
@@ -47,7 +55,10 @@ export default async function Home() {
             <p className="text-lg leading-relaxed text-gray-100">
               {memory.excerpt}
             </p>
-            <MemoryButton memoryId={memory.id} token={token} />
+            <MemoryButton
+              memoryData={memory}
+              handleDeleteMemory={handleDeleteMemory}
+            />
           </div>
         )
       })}

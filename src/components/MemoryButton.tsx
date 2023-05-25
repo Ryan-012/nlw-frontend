@@ -1,42 +1,27 @@
 'use client'
-import { api } from '@/lib/api'
 import { ArrowRight } from 'lucide-react'
-
 import { useState } from 'react'
-import { Memory } from '../../interfaces/memory/Memory'
 import { MemoryModal } from './MemoryModal'
+import { MemoryButtonProps } from '../interfaces/props/MemoryButton'
 
-interface MemoryButtonProps {
-  memoryId: string
-  token: string | undefined
-}
-export function MemoryButton({ memoryId, token }: MemoryButtonProps) {
+export function MemoryButton({
+  memoryData,
+  handleDeleteMemory,
+}: MemoryButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [memoryData, setMemoryData] = useState<Memory | null>(null)
 
-  async function fetchMemoryData() {
-    try {
-      const response = await api.get(`/memories/${memoryId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      const memoryData = response.data
-      setMemoryData(memoryData)
-      setIsModalOpen(true)
-    } catch (error) {
-      console.error('Error fetching memory:', error)
-    }
+  function showModal() {
+    setIsModalOpen(true)
   }
+
   function closeModal() {
     setIsModalOpen(false)
   }
 
   return (
-    <>
+    <div>
       <button
-        onClick={fetchMemoryData}
+        onClick={showModal}
         className="flex items-center gap-2 text-sm text-gray-200 hover:text-gray-100"
       >
         Ler mais
@@ -44,8 +29,12 @@ export function MemoryButton({ memoryId, token }: MemoryButtonProps) {
       </button>
 
       {isModalOpen && (
-        <MemoryModal memoryData={memoryData} onClose={closeModal} />
+        <MemoryModal
+          memoryData={memoryData}
+          onClose={closeModal}
+          handleDeleteMemory={handleDeleteMemory}
+        />
       )}
-    </>
+    </div>
   )
 }
