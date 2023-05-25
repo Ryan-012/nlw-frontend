@@ -4,10 +4,7 @@ import { useState } from 'react'
 import { MemoryModal } from './MemoryModal'
 import { MemoryButtonProps } from '../interfaces/props/MemoryButton'
 
-export function MemoryButton({
-  memoryData,
-  handleDeleteMemory,
-}: MemoryButtonProps) {
+export function MemoryButton({ memoryData }: MemoryButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   function showModal() {
@@ -28,13 +25,7 @@ export function MemoryButton({
         <ArrowRight className="h-4 w-4" />
       </button>
 
-      {isModalOpen && (
-        <MemoryModal
-          memoryData={memoryData}
-          onClose={closeModal}
-          handleDeleteMemory={handleDeleteMemory}
-        />
-      )}
+      {isModalOpen && <MemoryModal memory={memoryData} onClose={closeModal} />}
     </div>
   )
 }

@@ -1,7 +1,6 @@
 import { Memory } from '../Memory'
 
 export interface MemoryModalProps {
-  memoryData: Memory
+  memory: Memory
   onClose: () => void
-  handleDeleteMemory: (memoryId: string) => void
 }
