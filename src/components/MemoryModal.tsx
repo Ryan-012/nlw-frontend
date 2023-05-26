@@ -6,6 +6,7 @@ import { api } from '@/lib/api'
 import Cookie from 'js-cookie'
 import { MemoryModalProps } from '../interfaces/props/MemoryModal'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 dayjs.locale(ptBr)
 
 export function MemoryModal({ memory, onClose }: MemoryModalProps) {
@@ -53,9 +54,12 @@ export function MemoryModal({ memory, onClose }: MemoryModalProps) {
         </div>
         {/* Edit and Delete buttons */}
         <div className=" flex justify-end space-x-1">
-          <button className="inline-block rounded-full bg-purple-500 px-3 py-2 font-alt text-sm uppercase leading-none text-black hover:bg-purple-600">
+          <Link
+            href={`/memories/edit?id=${memory.id}`}
+            className="inline-block rounded-full bg-purple-500 px-3 py-2 font-alt text-sm uppercase leading-none text-black hover:bg-purple-600"
+          >
             Editar
-          </button>
+          </Link>
           <button
             onClick={handleDeleteMemory}
             className="inline-block rounded-full bg-purple-500 px-2 py-2 font-alt text-sm uppercase leading-none text-black hover:bg-purple-600"
