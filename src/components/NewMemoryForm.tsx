@@ -4,11 +4,19 @@ import { MediaPicker } from './MediaPicker'
 import { FormEvent } from 'react'
 import { api } from '@/lib/api'
 import Cookie from 'js-cookie'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { Memory } from '@/interfaces/Memory'
 
-export function NewMemoryForm() {
+export function NewMemoryForm({
+  memoryData,
+  onSaveMemory,
+}: {
+  memoryData?: Memory
+  onSaveMemory: (event: FormEvent<HTMLFormElement>) => void
+}) {
   const router = useRouter()
 
+  console.log(usePathname())
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
