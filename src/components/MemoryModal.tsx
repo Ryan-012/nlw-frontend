@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import dayjs from 'dayjs'
 import ptBr from 'dayjs/locale/pt-br'
-import { X } from 'lucide-react'
+import { Share, X } from 'lucide-react'
 import { api } from '@/lib/api'
 import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 import { MemoryModalProps } from '../interfaces/props/MemoryModal'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -24,6 +25,23 @@ export function MemoryModal({ memory, onClose }: MemoryModalProps) {
     })
 
     router.refresh()
+  }
+
+  function generateToken() {
+    const secretKey = 'your-secret-key' // Replace with your own secret key
+    const token = jwt.sign(
+      {
+        content: memory.content,
+        coverUrl: memory.coverUrl,
+        createdAt: memory.createdAt,
+      },
+      secretKey,
+    )
+    return token
+  }
+
+  async function handleShare() {
+    navigator.clipboard.writeText(`token=${generateToken()}`)
   }
 
   return (
@@ -52,6 +70,9 @@ export function MemoryModal({ memory, onClose }: MemoryModalProps) {
             {memory.content}
           </p>
         </div>
+        <button onClick={handleShare} className="share-button">
+          <Share className="h-4 w-4" />
+        </button>
         {/* Edit and Delete buttons */}
         <div className=" flex justify-end space-x-1">
           <Link

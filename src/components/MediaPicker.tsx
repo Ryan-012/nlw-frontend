@@ -13,7 +13,6 @@ export function MediaPicker({ coverUrl }: { coverUrl?: string }) {
     const previewUrl = URL.createObjectURL(files[0])
 
     setPreview(previewUrl)
-    console.log(preview, coverUrl)
   }
 
   return (

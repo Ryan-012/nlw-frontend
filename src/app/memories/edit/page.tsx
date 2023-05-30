@@ -43,39 +43,38 @@ export default function EditMemory() {
 
     const formData = new FormData(event.currentTarget)
 
-    const fileToUpload = formData.get('coverUrl')
-    console.log(formData.get('file'))
-    const coverUrl = ''
+    const fileToUpload = formData.get('coverUrl') as File
+
+    console.log(fileToUpload?.size)
+    let coverUrl = ''
 
     if (fileToUpload) {
       const uploadFormData = new FormData()
       uploadFormData.set('file', fileToUpload)
 
-      // console.log(data?.coverUrl, coverUrl)
+      if (fileToUpload?.size > 0) {
+        const uploadResponse = await api.post('/upload', uploadFormData)
+        coverUrl = uploadResponse.data
+      }
 
-      // const uploadResponse = await api.post('/upload', uploadFormData)
-
-      // coverUrl = uploadResponse.data
-
-      //   await api.put(
-      //     `/memories/${memoryId}`,
-      //     {
-      //       coverUrl,
-      //       content: formData.get('content'),
-      //       isPublic: formData.get('isPublic'),
-      //     },
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //     },
-      //   )
-      //   router.push('/')
-    } else {
-      alert('error')
+      await api.put(
+        `/memories/${memoryId}`,
+        {
+          coverUrl: coverUrl === '' ? data?.coverUrl : coverUrl,
+          content: formData.get('content'),
+          isPublic: formData.get('isPublic'),
+          createdAt: formData.get('createdAt'),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      router.push('/')
     }
   }
-
+  console.log(data?.coverUrl)
   return (
     <div className="flex flex-1 flex-col gap-4 p-16">
       {data ? (

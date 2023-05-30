@@ -4,10 +4,11 @@ import { api } from '@/lib/api'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import { FormEvent } from 'react'
-import router from 'next/router'
 import Cookie from 'js-cookie'
+import { useRouter } from 'next/navigation'
 
 export default function NewMemory() {
+  const router = useRouter()
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -32,6 +33,7 @@ export default function NewMemory() {
           coverUrl,
           content: formData.get('content'),
           isPublic: formData.get('isPublic'),
+          createdAt: formData.get('createdAt'),
         },
         {
           headers: {
@@ -41,8 +43,6 @@ export default function NewMemory() {
       )
 
       router.push('/')
-    } else {
-      alert('error')
     }
   }
   return (

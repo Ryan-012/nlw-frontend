@@ -9,7 +9,7 @@ export function NewMemoryForm({
   onSaveMemory,
 }: {
   memoryData?: Memory
-  onSaveMemory?: (event: FormEvent<HTMLFormElement>) => void
+  onSaveMemory: (event: FormEvent<HTMLFormElement>) => void
 }) {
   return (
     <form onSubmit={onSaveMemory} className="flex flex-1 flex-col gap-2">
