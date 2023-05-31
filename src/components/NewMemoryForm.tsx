@@ -31,7 +31,6 @@ export function NewMemoryForm({
             type="checkbox"
             name="isPublic"
             id="isPublic"
-            required={true}
             defaultChecked={memoryData?.isPublic}
           />
           Tornar memória pública

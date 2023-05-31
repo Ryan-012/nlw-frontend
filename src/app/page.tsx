@@ -6,7 +6,7 @@ import ptBr from 'dayjs/locale/pt-br'
 import Image from 'next/image'
 import { Memory } from '@/interfaces/Memory'
 import { cookies } from 'next/headers'
-import { getUser } from '@/lib/auth'
+
 import { MemoryLikeButton } from '@/components/MemoryLikeButton'
 
 dayjs.locale(ptBr)
@@ -14,7 +14,6 @@ dayjs.locale(ptBr)
 export default async function Home() {
   const isAuthenticated = cookies().has('token')
   const token = cookies().get('token')?.value
-  const user = getUser()
 
   if (!isAuthenticated) return <EmptyMemories />
 
@@ -26,10 +25,10 @@ export default async function Home() {
 
   const memories: Memory[] = response.data
 
-  if (memories.length === 0) return <EmptyMemories />
+  if (memories.length === 0 || !token) return <EmptyMemories />
 
   return (
-    <div className="flex flex-col gap-10 p-8">
+    <div className=" flex flex-col gap-10 p-8">
       {memories.map((memory: Memory) => {
         return (
           <div key={memory.id} className="space-y-4">
@@ -46,9 +45,10 @@ export default async function Home() {
             <p className="break-words text-lg leading-relaxed text-gray-100">
               {memory.excerpt}
             </p>
-            <MemoryButton memoryData={memory} />
-
-            <MemoryLikeButton memoryId={memory.id} userId={user.sub} />
+            <div className="flex flex-row space-x-3">
+              <MemoryLikeButton memoryId={memory.id} token={token} />
+              <MemoryButton memoryData={memory} />
+            </div>
           </div>
         )
       })}

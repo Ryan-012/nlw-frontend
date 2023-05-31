@@ -9,6 +9,7 @@ import { Profile } from '@/components/Profile'
 import { SignIn } from '@/components/SignIn'
 import { Copyright } from '@/components/Copyright'
 import { cookies } from 'next/headers'
+import { SearchButton } from '@/components/SearchButton'
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
 const baiJamjuree = BaiJamjuree({
@@ -40,7 +41,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <div className="absolute bottom-0  right-2 top-0 w-2  bg-stripes"></div>
 
             {/* Sign in  */}
-            {isAuthenticated ? <Profile /> : <SignIn />}
+
+            {isAuthenticated ? (
+              <div className=" flex w-full flex-row justify-between">
+                <Profile />
+                <SearchButton />
+              </div>
+            ) : (
+              <SignIn />
+            )}
 
             {/* Hero  */}
             <Hero />

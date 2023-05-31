@@ -54,17 +54,16 @@ export function MemoryModal({ memory, onClose }: MemoryModalProps) {
           </p>
         </div>
 
-        {/* Edit and Delete buttons */}
         <div className=" flex justify-end space-x-1">
           <Link
             href={`/memories/edit?id=${memory.id}`}
-            className="inline-block rounded-full bg-purple-500 px-3 py-2 font-alt text-sm uppercase leading-none text-black hover:bg-purple-600"
+            className="inline-block rounded-full bg-green-500 px-3 py-2 font-alt text-sm uppercase leading-none text-black hover:bg-green-600"
           >
             Editar
           </Link>
           <button
             onClick={handleDeleteMemory}
-            className="inline-block rounded-full bg-purple-500 px-2 py-2 font-alt text-sm uppercase leading-none text-black hover:bg-purple-600"
+            className="inline-block rounded-full bg-green-500 px-2 py-2 font-alt text-sm uppercase leading-none text-black hover:bg-green-600"
           >
             Deletar
           </button>
