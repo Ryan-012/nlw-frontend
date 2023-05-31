@@ -6,12 +6,15 @@ import ptBr from 'dayjs/locale/pt-br'
 import Image from 'next/image'
 import { Memory } from '@/interfaces/Memory'
 import { cookies } from 'next/headers'
+import { getUser } from '@/lib/auth'
+import { MemoryLikeButton } from '@/components/MemoryLikeButton'
 
 dayjs.locale(ptBr)
 
 export default async function Home() {
   const isAuthenticated = cookies().has('token')
   const token = cookies().get('token')?.value
+  const user = getUser()
 
   if (!isAuthenticated) return <EmptyMemories />
 
@@ -44,6 +47,8 @@ export default async function Home() {
               {memory.excerpt}
             </p>
             <MemoryButton memoryData={memory} />
+
+            <MemoryLikeButton memoryId={memory.id} userId={user.sub} />
           </div>
         )
       })}

@@ -6,4 +6,5 @@ export interface Memory {
   content: string
   isPublic: boolean
   createdAt: string
+  likes: []
 }
