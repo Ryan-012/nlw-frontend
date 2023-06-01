@@ -40,7 +40,7 @@ export default async function Home() {
     return <EmptyMemories />
   }
   return (
-    <div className=" flex flex-col gap-10 p-8 ">
+    <div className=" flex  flex-col gap-10 p-8 ">
       {memoriesData.map((memory: Memory) => {
         return (
           <div key={memory.id} className="space-y-4">
