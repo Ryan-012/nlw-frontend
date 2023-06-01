@@ -1,5 +1,3 @@
-import { Memory } from '../Memory'
-
 export interface MemoryButtonProps {
-  memoryData: Memory
+  memoryId: string
 }

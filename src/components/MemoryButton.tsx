@@ -1,10 +1,11 @@
 'use client'
 import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
-import { MemoryModal } from './MemoryModal'
 import { MemoryButtonProps } from '../interfaces/props/MemoryButton'
+import { Modal } from './modal/Modal'
+import { MemoryContent } from './modal/contents/Memory'
 
-export function MemoryButton({ memoryData }: MemoryButtonProps) {
+export function MemoryButton({ memoryId }: MemoryButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   function showModal() {
@@ -25,7 +26,11 @@ export function MemoryButton({ memoryData }: MemoryButtonProps) {
         <ArrowRight className="h-4 w-4" />
       </button>
 
-      {isModalOpen && <MemoryModal memory={memoryData} onClose={closeModal} />}
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <MemoryContent memoryId={memoryId} onClose={closeModal} />
+        </Modal>
+      )}
     </div>
   )
 }

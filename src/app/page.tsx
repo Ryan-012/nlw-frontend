@@ -1,3 +1,4 @@
+'use client'
 import { EmptyMemories } from '@/components/EmptyMemories'
 import { MemoryButton } from '@/components/MemoryButton'
 import { api } from '@/lib/api'
@@ -5,31 +6,41 @@ import dayjs from 'dayjs'
 import ptBr from 'dayjs/locale/pt-br'
 import Image from 'next/image'
 import { Memory } from '@/interfaces/Memory'
-import { cookies } from 'next/headers'
-
 import { MemoryLikeButton } from '@/components/MemoryLikeButton'
+import { useContext, useEffect } from 'react'
+import Cookie from 'js-cookie'
+import { MemoriesDataContext } from '@/contexts/MemoriesData'
 
 dayjs.locale(ptBr)
 
 export default async function Home() {
-  const isAuthenticated = cookies().has('token')
-  const token = cookies().get('token')?.value
+  const token = Cookie.get('token')
+  const { memoriesData, setMemoriesData } = useContext(MemoriesDataContext)
 
-  if (!isAuthenticated) return <EmptyMemories />
+  useEffect(() => {
+    const fetchMemories = async () => {
+      try {
+        const response = await api.get('/memories', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        console.log(response.data)
+        setMemoriesData(response.data)
+      } catch (error) {
+        console.log(error)
+        setMemoriesData([])
+      }
+    }
+    if (token) fetchMemories()
+  }, [token, setMemoriesData])
 
-  const response = await api.get('/memories', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-
-  const memories: Memory[] = response.data
-
-  if (memories.length === 0 || !token) return <EmptyMemories />
-
+  if (!token || memoriesData.length === 0) {
+    return <EmptyMemories />
+  }
   return (
     <div className=" flex flex-col gap-10 p-8">
-      {memories.map((memory: Memory) => {
+      {memoriesData.map((memory: Memory) => {
         return (
           <div key={memory.id} className="space-y-4">
             <time className="flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-5 before:bg-gray-50">
@@ -47,7 +58,7 @@ export default async function Home() {
             </p>
             <div className="flex flex-row space-x-3">
               <MemoryLikeButton memoryId={memory.id} token={token} />
-              <MemoryButton memoryData={memory} />
+              <MemoryButton memoryId={memory.id} />
             </div>
           </div>
         )

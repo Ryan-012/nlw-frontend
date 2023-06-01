@@ -7,24 +7,29 @@ import Cookie from 'js-cookie'
 import { MemoryModalProps } from '../interfaces/props/MemoryModal'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { MemoriesDataContext } from '@/contexts/MemoriesData'
+import { useContext } from 'react'
 
 dayjs.locale(ptBr)
 
-export function MemoryModal({ memory, onClose }: MemoryModalProps) {
-  const router = useRouter()
-  if (!memory) {
-    return null
-  }
+export function MemoryModal({ memoryId, onClose }: MemoryModalProps) {
+  const { memoriesData, setMemoriesData } = useContext(MemoriesDataContext)
   const token = Cookie.get('token')
+  const memory = memoriesData.find((memory) => memory.id === memoryId)
+
+  if (!memoryId || !memory) return null
 
   async function handleDeleteMemory() {
-    await api.delete(`/memories/${memory.id}`, {
+    await api.delete(`/memories/${memoryId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
 
-    router.refresh()
+    setMemoriesData((prevMemories) =>
+      prevMemories.filter((memory) => memory.id !== memoryId),
+    )
+    onClose()
   }
 
   return (

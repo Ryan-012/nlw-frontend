@@ -2,7 +2,8 @@
 
 import { Search } from 'lucide-react'
 import { useState } from 'react'
-import { SearchModal } from './SearchModal'
+import { SearchContent } from './modal/contents/SearchModal'
+import { Modal } from './modal/Modal'
 
 export function SearchButton() {
   const [IsSearchModalOpen, setIsSearchModalOpen] = useState(false)
@@ -24,7 +25,11 @@ export function SearchButton() {
         Search users
         <Search className="h-4 w-4" />
       </button>
-      {IsSearchModalOpen && <SearchModal closeSearchModal={closeSearchModal} />}
+      {IsSearchModalOpen && (
+        <Modal onClose={closeSearchModal}>
+          <SearchContent />
+        </Modal>
+      )}
     </>
   )
 }

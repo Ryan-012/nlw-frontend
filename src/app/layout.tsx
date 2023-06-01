@@ -10,6 +10,7 @@ import { SignIn } from '@/components/SignIn'
 import { Copyright } from '@/components/Copyright'
 import { cookies } from 'next/headers'
 import { SearchButton } from '@/components/SearchButton'
+import ThemeProvider from '@/contexts/MemoriesData'
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
 const baiJamjuree = BaiJamjuree({
@@ -60,7 +61,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
           {/* Right  */}
           <div className=" flex max-h-screen flex-col overflow-y-scroll bg-[url(../assets/bg-stars.svg)] bg-cover ">
-            {children}
+            <ThemeProvider> {children}</ThemeProvider>
           </div>
         </main>
       </body>

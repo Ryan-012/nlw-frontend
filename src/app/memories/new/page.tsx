@@ -3,12 +3,15 @@ import { NewMemoryForm } from '@/components/NewMemoryForm'
 import { api } from '@/lib/api'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
-import { FormEvent } from 'react'
+import { FormEvent, useContext } from 'react'
 import Cookie from 'js-cookie'
 import { useRouter } from 'next/navigation'
+import { MemoriesDataContext } from '@/contexts/MemoriesData'
 
 export default function NewMemory() {
   const router = useRouter()
+  const { _memoriesData, setMemoriesData } = useContext(MemoriesDataContext)
+
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -27,20 +30,25 @@ export default function NewMemory() {
       coverUrl = uploadResponse.data
 
       const token = Cookie.get('token')
-      await api.post(
-        '/memories',
-        {
-          coverUrl,
-          content: formData.get('content'),
-          isPublic: formData.get('isPublic'),
-          createdAt: formData.get('createdAt'),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      await api
+        .post(
+          '/memories',
+          {
+            coverUrl,
+            content: formData.get('content'),
+            isPublic: formData.get('isPublic'),
+            createdAt: formData.get('createdAt'),
           },
-        },
-      )
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        )
+        .then((res) => {
+          setMemoriesData((prevMemories) => [...prevMemories, res.data])
+          router.push('/')
+        })
 
       router.push('/')
     }

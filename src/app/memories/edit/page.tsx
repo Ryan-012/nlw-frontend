@@ -1,40 +1,23 @@
 'use client'
 import { NewMemoryForm } from '@/components/NewMemoryForm'
-import { Memory } from '@/interfaces/Memory'
 import { api } from '@/lib/api'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import Cookie from 'js-cookie'
 import { useSearchParams, useRouter } from 'next/navigation'
 
-import { useState, useEffect, FormEvent } from 'react'
+import { useState, FormEvent, useContext } from 'react'
+import { MemoriesDataContext } from '@/contexts/MemoriesData'
 
 export default function EditMemory() {
   const token = Cookie.get('token')
   const router = useRouter()
   const memoryId = useSearchParams().get('id')
-
-  const [data, setData] = useState<Memory | null>(null)
+  const { memoriesData, setMemoriesData } = useContext(MemoriesDataContext)
   const [error, setError] = useState<String | null>(null)
+  const memory = memoriesData.find((memory) => memory.id === memoryId)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await api
-        .get(`/memories/${memoryId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setData(response.data)
-        })
-        .catch((error) => {
-          setError(error.response.status)
-        })
-    }
-
-    if (token && memoryId) fetchData()
-  }, [memoryId, token])
+  if (!memory) return router.push(`/error?statusCode=404`)
 
   if (!memoryId || error) return router.push(`/error?statusCode=${error}`)
 
@@ -57,40 +40,44 @@ export default function EditMemory() {
         coverUrl = uploadResponse.data
       }
 
-      await api.put(
-        `/memories/${memoryId}`,
-        {
-          coverUrl: coverUrl === '' ? data?.coverUrl : coverUrl,
-          content: formData.get('content'),
-          isPublic: formData.get('isPublic'),
-          createdAt: formData.get('createdAt'),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      await api
+        .put(
+          `/memories/${memoryId}`,
+          {
+            coverUrl: coverUrl === '' ? memory?.coverUrl : coverUrl,
+            content: formData.get('content'),
+            isPublic: formData.get('isPublic'),
+            createdAt: formData.get('createdAt'),
           },
-        },
-      )
-      router.push('/')
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        )
+        .then((res) => {
+          setMemoriesData((prevMemories) => {
+            const spliceOldMemory = prevMemories.filter(
+              (memory) => memory.id !== memoryId,
+            )
+
+            return [...spliceOldMemory, res.data]
+          })
+          router.push('/')
+        })
     }
   }
-  console.log(data?.coverUrl)
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-16">
-      {data ? (
-        <>
-          <Link
-            href="/"
-            className="gab-1 flex items-center text-sm text-gray-200 hover:text-gray-100"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            voltar à timeline
-          </Link>
-          <NewMemoryForm memoryData={data} onSaveMemory={handleEditMemory} />
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <Link
+        href="/"
+        className="gab-1 flex items-center text-sm text-gray-200 hover:text-gray-100"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        voltar à timeline
+      </Link>
+      <NewMemoryForm memoryData={memory} onSaveMemory={handleEditMemory} />
     </div>
   )
 }

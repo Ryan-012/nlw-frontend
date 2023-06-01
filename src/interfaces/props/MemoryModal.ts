@@ -1,6 +1,4 @@
-import { Memory } from '../Memory'
-
 export interface MemoryModalProps {
-  memory: Memory
+  memoryId: string
   onClose: () => void
 }
