@@ -11,6 +11,7 @@ import { Copyright } from '@/components/Copyright'
 import { cookies } from 'next/headers'
 import { SearchButton } from '@/components/SearchButton'
 import ThemeProvider from '@/contexts/MemoriesData'
+import ModalProvider from '@/contexts/Modal'
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
 const baiJamjuree = BaiJamjuree({
@@ -46,7 +47,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             {isAuthenticated ? (
               <div className=" flex w-full flex-row justify-between">
                 <Profile />
-                <SearchButton />
+                <ModalProvider>
+                  <SearchButton />
+                </ModalProvider>
               </div>
             ) : (
               <SignIn />

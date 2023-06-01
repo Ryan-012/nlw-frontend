@@ -1,25 +1,18 @@
 'use client'
 import { ArrowRight } from 'lucide-react'
-import { useState } from 'react'
 import { MemoryButtonProps } from '../interfaces/props/MemoryButton'
 import { Modal } from './modal/Modal'
 import { MemoryContent } from './modal/contents/Memory'
+import { useContext } from 'react'
+import { ModalContext } from '@/contexts/Modal'
 
 export function MemoryButton({ memoryId }: MemoryButtonProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  function showModal() {
-    setIsModalOpen(true)
-  }
-
-  function closeModal() {
-    setIsModalOpen(false)
-  }
+  const { isModalOpen, openModal, closeModal } = useContext(ModalContext)
 
   return (
     <div>
       <button
-        onClick={showModal}
+        onClick={openModal}
         className="flex items-center gap-2 text-sm text-gray-200 hover:text-gray-100"
       >
         Ler mais
@@ -28,7 +21,7 @@ export function MemoryButton({ memoryId }: MemoryButtonProps) {
 
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <MemoryContent memoryId={memoryId} onClose={closeModal} />
+          <MemoryContent memoryId={memoryId} />
         </Modal>
       )}
     </div>

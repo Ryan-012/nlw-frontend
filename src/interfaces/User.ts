@@ -1,5 +1,7 @@
 export interface User {
-  sub: string
+  id: string
+  githubId: number
   name: string
+  login: string
   avatarUrl: string
 }

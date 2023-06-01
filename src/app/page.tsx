@@ -10,6 +10,7 @@ import { MemoryLikeButton } from '@/components/MemoryLikeButton'
 import { useContext, useEffect } from 'react'
 import Cookie from 'js-cookie'
 import { MemoriesDataContext } from '@/contexts/MemoriesData'
+import ModalProvider from '@/contexts/Modal'
 
 dayjs.locale(ptBr)
 
@@ -25,7 +26,7 @@ export default async function Home() {
             Authorization: `Bearer ${token}`,
           },
         })
-        console.log(response.data)
+
         setMemoriesData(response.data)
       } catch (error) {
         console.log(error)
@@ -39,7 +40,7 @@ export default async function Home() {
     return <EmptyMemories />
   }
   return (
-    <div className=" flex flex-col gap-10 p-8">
+    <div className=" flex flex-col gap-10 p-8 ">
       {memoriesData.map((memory: Memory) => {
         return (
           <div key={memory.id} className="space-y-4">
@@ -58,7 +59,9 @@ export default async function Home() {
             </p>
             <div className="flex flex-row space-x-3">
               <MemoryLikeButton memoryId={memory.id} token={token} />
-              <MemoryButton memoryId={memory.id} />
+              <ModalProvider>
+                <MemoryButton memoryId={memory.id} />
+              </ModalProvider>
             </div>
           </div>
         )

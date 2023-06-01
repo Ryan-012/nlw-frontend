@@ -10,7 +10,7 @@ import { useContext } from 'react'
 
 dayjs.locale(ptBr)
 
-export function MemoryContent({ memoryId, onClose }: MemoryModalProps) {
+export function MemoryContent({ memoryId }: MemoryModalProps) {
   const { memoriesData, setMemoriesData } = useContext(MemoriesDataContext)
   const token = Cookie.get('token')
   const memory = memoriesData.find((memory) => memory.id === memoryId)
@@ -27,17 +27,16 @@ export function MemoryContent({ memoryId, onClose }: MemoryModalProps) {
     setMemoriesData((prevMemories) =>
       prevMemories.filter((memory) => memory.id !== memoryId),
     )
-    onClose()
   }
   return (
     <>
-      <div className="mb-4 flex flex-row justify-center">
+      <div className="mb-4 flex max-h-[30%]  flex-row justify-center">
         <Image
           src={memory.coverUrl}
           width={200}
           height={200}
           alt="Memory Image"
-          className="w-3/4  rounded-lg"
+          className=" aspect-square w-3/4 rounded-lg  object-cover"
         />
       </div>
       <div className="flex flex-col space-y-4">

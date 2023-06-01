@@ -1,32 +1,25 @@
 'use client'
 
 import { Search } from 'lucide-react'
-import { useState } from 'react'
-import { SearchContent } from './modal/contents/SearchModal'
+import { useContext } from 'react'
+import { SearchContent } from './modal/contents/Search'
 import { Modal } from './modal/Modal'
+import { ModalContext } from '@/contexts/Modal'
 
 export function SearchButton() {
-  const [IsSearchModalOpen, setIsSearchModalOpen] = useState(false)
-
-  const openSearchModal = () => {
-    setIsSearchModalOpen(true)
-  }
-
-  const closeSearchModal = () => {
-    setIsSearchModalOpen(false)
-  }
+  const { isModalOpen, openModal, closeModal } = useContext(ModalContext)
 
   return (
     <>
       <button
-        onClick={openSearchModal}
-        className="text-small  flex items-center gap-2 text-left text-gray-100 hover:text-gray-50"
+        onClick={openModal}
+        className="text-small flex  items-center gap-2 text-left  text-gray-100 hover:text-gray-50"
       >
         Search users
         <Search className="h-4 w-4" />
       </button>
-      {IsSearchModalOpen && (
-        <Modal onClose={closeSearchModal}>
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
           <SearchContent />
         </Modal>
       )}
