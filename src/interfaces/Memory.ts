@@ -1,3 +1,5 @@
+import { Like } from './Like'
+
 export interface Memory {
   id: string
   userId: string
@@ -6,5 +8,5 @@ export interface Memory {
   content: string
   isPublic: boolean
   createdAt: string
-  likes: []
+  likes: Like[]
 }

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Cookie from 'js-cookie'
 import { useSearchParams, useRouter } from 'next/navigation'
 
-import { useState, FormEvent, useContext } from 'react'
+import { FormEvent, useContext } from 'react'
 import { MemoriesDataContext } from '@/contexts/MemoriesData'
 
 export default function EditMemory() {
@@ -14,12 +14,11 @@ export default function EditMemory() {
   const router = useRouter()
   const memoryId = useSearchParams().get('id')
   const { memoriesData, setMemoriesData } = useContext(MemoriesDataContext)
-  const [error, setError] = useState<String | null>(null)
   const memory = memoriesData.find((memory) => memory.id === memoryId)
 
   if (!memory) return router.push(`/error?statusCode=404`)
 
-  if (!memoryId || error) return router.push(`/error?statusCode=${error}`)
+  if (!memoryId) return router.push(`/error?statusCode=500`)
 
   async function handleEditMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()

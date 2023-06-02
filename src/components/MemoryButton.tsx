@@ -6,7 +6,7 @@ import { MemoryContent } from './modal/contents/Memory'
 import { useContext } from 'react'
 import { ModalContext } from '@/contexts/Modal'
 
-export function MemoryButton({ memoryId }: MemoryButtonProps) {
+export function MemoryButton({ memoryId, memoryData }: MemoryButtonProps) {
   const { isModalOpen, openModal, closeModal } = useContext(ModalContext)
 
   return (
@@ -21,7 +21,7 @@ export function MemoryButton({ memoryId }: MemoryButtonProps) {
 
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <MemoryContent memoryId={memoryId} />
+          <MemoryContent memoryId={memoryId} memoryData={memoryData} />
         </Modal>
       )}
     </div>
