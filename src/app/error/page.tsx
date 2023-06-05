@@ -5,5 +5,5 @@ import { useSearchParams } from 'next/navigation'
 export default function ErrorPage() {
   const statusCode = useSearchParams().get('statusCode')
 
-  return <Error statusCode={statusCode ? parseInt(statusCode) : 404} />
+  return <Error statusCode={statusCode ? parseInt(statusCode) : 500} />
 }

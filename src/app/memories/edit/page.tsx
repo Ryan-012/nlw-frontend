@@ -13,12 +13,10 @@ export default function EditMemory() {
   const token = Cookie.get('token')
   const router = useRouter()
   const memoryId = useSearchParams().get('id')
-  const { memoriesData, setMemoriesData } = useContext(MemoriesDataContext)
+  const { memoriesData, editMemory } = useContext(MemoriesDataContext)
   const memory = memoriesData.find((memory) => memory.id === memoryId)
 
-  if (!memory) return router.push(`/error?statusCode=404`)
-
-  if (!memoryId) return router.push(`/error?statusCode=500`)
+  if (!memory || !memoryId) return router.push(`/error?statusCode=404`)
 
   async function handleEditMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -27,7 +25,6 @@ export default function EditMemory() {
 
     const fileToUpload = formData.get('coverUrl') as File
 
-    console.log(fileToUpload?.size)
     let coverUrl = ''
 
     if (fileToUpload) {
@@ -39,31 +36,28 @@ export default function EditMemory() {
         coverUrl = uploadResponse.data
       }
 
-      await api
-        .put(
-          `/memories/${memoryId}`,
-          {
-            coverUrl: coverUrl === '' ? memory?.coverUrl : coverUrl,
-            content: formData.get('content'),
-            isPublic: formData.get('isPublic'),
-            createdAt: formData.get('createdAt'),
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
+      if (memoryId) {
+        await api
+          .put(
+            `/memories/${memoryId}`,
+            {
+              coverUrl: coverUrl === '' ? memory?.coverUrl : coverUrl,
+              content: formData.get('content'),
+              isPublic: formData.get('isPublic'),
+              createdAt: formData.get('createdAt'),
             },
-          },
-        )
-        .then((res) => {
-          setMemoriesData((prevMemories) => {
-            const spliceOldMemory = prevMemories.filter(
-              (memory) => memory.id !== memoryId,
-            )
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          .then((res) => {
+            editMemory(memoryId, res.data)
 
-            return [...spliceOldMemory, res.data]
+            router.push('/')
           })
-          router.push('/')
-        })
+      }
     }
   }
 

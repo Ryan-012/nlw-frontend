@@ -39,6 +39,7 @@ export default async function Home() {
   if (!token || memoriesData.length === 0) {
     return <EmptyMemories />
   }
+
   return (
     <div className=" flex  flex-col gap-10 p-8">
       {memoriesData.map((memory: Memory) => {
@@ -57,8 +58,9 @@ export default async function Home() {
             <p className="break-words text-lg leading-relaxed text-gray-100">
               {memory.excerpt}
             </p>
-            <div className="flex flex-row space-x-3">
+            <div className="flex flex-row space-x-2">
               <MemoryLikeButton memoryId={memory.id} token={token} />
+              <span>{memory.likes.length}</span>
               <ModalProvider>
                 <MemoryButton memoryId={memory.id} />
               </ModalProvider>

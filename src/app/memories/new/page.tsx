@@ -10,7 +10,7 @@ import { MemoriesDataContext } from '@/contexts/MemoriesData'
 
 export default function NewMemory() {
   const router = useRouter()
-  const { setMemoriesData } = useContext(MemoriesDataContext)
+  const { addMemory } = useContext(MemoriesDataContext)
 
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -46,7 +46,7 @@ export default function NewMemory() {
           },
         )
         .then((res) => {
-          setMemoriesData((prevMemories) => [...prevMemories, res.data])
+          addMemory(res.data)
           router.push('/')
         })
 

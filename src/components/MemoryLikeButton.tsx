@@ -1,8 +1,9 @@
 'use client'
+import { MemoriesDataContext } from '@/contexts/MemoriesData'
 import { api } from '@/lib/api'
 import { decode } from 'jsonwebtoken'
 import { Heart } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useContext } from 'react'
 
 export function MemoryLikeButton({
   memoryId,
@@ -11,33 +12,16 @@ export function MemoryLikeButton({
   memoryId: string
   token: string
 }) {
-  const [likeId, setLikeId] = useState<string | null>(null)
+  const { likeMemory, unlikeMemory, memoriesData } =
+    useContext(MemoriesDataContext)
   const userId = decode(token)?.sub
 
-  useEffect(() => {
-    const checkLikedMemory = async () => {
-      try {
-        const response = await api.get(`/memories/like/${memoryId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+  const likedMemory = memoriesData
+    .find((memory) => memory.id === memoryId)
+    ?.likes.find((like) => like.userId === userId)
+  const likeId = likedMemory ? likedMemory.id : null
 
-        const likedMemory = response.data.find(
-          (like: any) => like.userId === userId,
-        )
-        if (likedMemory) {
-          setLikeId(likedMemory.id)
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    if (token && memoryId) {
-      checkLikedMemory()
-    }
-  }, [token, memoryId, userId])
-
-  async function likeMemory() {
+  async function handleLikeMemory() {
     await api
       .post(
         '/memories/like',
@@ -47,31 +31,38 @@ export function MemoryLikeButton({
         },
       )
       .then((res) => {
-        setLikeId(res.data.id)
+        likeMemory(res.data, memoryId)
+      })
+      .catch((error) => {
+        console.error(error)
       })
   }
 
-  async function unlikeMemory() {
+  async function handleUnlikeMemory() {
     await api
       .delete(`/memories/like/${likeId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then(() => {
-        setLikeId(null)
+      .then((res) => {
+        unlikeMemory(res.data, memoryId)
+      })
+      .catch((error) => {
+        console.error(error)
       })
   }
 
   return (
-    <>
-      {likeId ? (
-        <button onClick={unlikeMemory} className="border-none bg-transparent">
-          <Heart className="h-4 w-4 fill-green-600 stroke-green-600" />
-        </button>
-      ) : (
-        <button onClick={likeMemory} className="border-none bg-transparent">
-          <Heart className="h-4 w-4 hover:fill-green-600 hover:stroke-green-600 hover:transition-all hover:duration-300 " />
-        </button>
-      )}
-    </>
+    <button
+      onClick={likedMemory ? handleUnlikeMemory : handleLikeMemory}
+      className="border-none bg-transparent"
+    >
+      <Heart
+        className={`h-4 w-4 ${
+          likedMemory
+            ? 'fill-green-600 stroke-green-600'
+            : 'hover:fill-green-600 hover:stroke-green-600 hover:transition-all hover:duration-300'
+        }`}
+      />
+    </button>
   )
 }

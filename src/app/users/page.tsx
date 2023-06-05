@@ -2,7 +2,7 @@
 import { useSearchParams } from 'next/navigation'
 import Cookie from 'js-cookie'
 import { api } from '@/lib/api'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { User } from '@/interfaces/User'
 import { Memory } from '@/interfaces/Memory'
 import { MemoryButton } from '@/components/MemoryButton'
@@ -10,10 +10,13 @@ import { MemoryLikeButton } from '@/components/MemoryLikeButton'
 import ModalProvider from '@/contexts/Modal'
 import dayjs from 'dayjs'
 import Image from 'next/image'
+import { MemoriesDataContext } from '@/contexts/MemoriesData'
 export default function UserPage() {
   const token = Cookie.get('token')
   const memoryId = useSearchParams().get('id')
   const [user, setUser] = useState<User | null>(null)
+  const { setMemoriesData, memoriesData } = useContext(MemoriesDataContext)
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -24,14 +27,16 @@ export default function UserPage() {
         })
 
         setUser(response.data)
+        setMemoriesData(response.data.memories)
       } catch (error) {
         console.log(error)
+        setMemoriesData([])
       }
     }
     if (token) fetchUser()
-  }, [token, memoryId, setUser])
+  }, [token, memoryId, setUser, setMemoriesData])
 
-  if (!token || !user) return <div></div>
+  if (!token || !user) return
 
   return (
     <>
@@ -51,7 +56,7 @@ export default function UserPage() {
       </div>
 
       <div className=" flex  flex-col gap-10 p-8">
-        {user?.memories.map((memory: Memory) => {
+        {memoriesData.map((memory: Memory) => {
           return (
             <div key={memory.id} className="space-y-4">
               <time className="flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-5 before:bg-gray-50">
@@ -69,6 +74,7 @@ export default function UserPage() {
               </p>
               <div className="flex flex-row space-x-3">
                 <MemoryLikeButton memoryId={memory.id} token={token} />
+                <span>{memory.likes.length}</span>
                 <ModalProvider>
                   <MemoryButton memoryId={memory.id} memoryData={memory} />
                 </ModalProvider>
