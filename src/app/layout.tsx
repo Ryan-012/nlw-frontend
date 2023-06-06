@@ -9,7 +9,7 @@ import { Profile } from '@/components/layout/Profile'
 import { SignIn } from '@/components/layout/SignIn'
 import { Copyright } from '@/components/layout/Copyright'
 import { cookies } from 'next/headers'
-import { SearchButton } from '@/components/SearchButton'
+import { SearchButton } from '@/components/layout/SearchButton'
 import ThemeProvider from '@/contexts/MemoriesData'
 import ModalProvider from '@/contexts/Modal'
 

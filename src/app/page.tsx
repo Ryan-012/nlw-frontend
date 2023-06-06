@@ -5,7 +5,6 @@ import { useContext, useEffect } from 'react'
 import Cookie from 'js-cookie'
 import { MemoriesDataContext } from '@/contexts/MemoriesData'
 import { MemoryItems } from '@/components/MemoryItems'
-
 export default async function Home() {
   const token = Cookie.get('token')
   const { memoriesData, setMemoriesData } = useContext(MemoriesDataContext)

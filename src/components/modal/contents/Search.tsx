@@ -12,6 +12,7 @@ export function SearchContent() {
   const [users, setUsers] = useState<User[]>([])
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users)
   const { closeModal } = useContext(ModalContext)
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {

@@ -1,9 +1,8 @@
 'use client'
-
 import { Search } from 'lucide-react'
 import { useContext } from 'react'
-import { SearchContent } from './modal/contents/Search'
-import { Modal } from './modal/Modal'
+import { SearchContent } from '../modal/contents/Search'
+import { Modal } from '../modal/Modal'
 import { ModalContext } from '@/contexts/Modal'
 
 export function SearchButton() {

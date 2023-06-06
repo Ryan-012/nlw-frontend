@@ -15,7 +15,7 @@ export function MemoryContent({ memoryId, memoryData }: MemoryModalProps) {
   const { memoriesData, deleteMemory } = useContext(MemoriesDataContext)
   const token = Cookie.get('token')
   const memory =
-    memoryData || memoriesData.find((memory) => memory.id === memoryId) // get memories this user
+    memoryData || memoriesData.find((memory) => memory.id === memoryId)
   const pathName = usePathname()
 
   if (!memoryId || !memory) return null

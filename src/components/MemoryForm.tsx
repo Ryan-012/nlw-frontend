@@ -4,7 +4,7 @@ import { MediaPicker } from './layout/MediaPicker'
 import { FormEvent } from 'react'
 import { Memory } from '@/interfaces/Memory'
 
-export function NewMemoryForm({
+export function MemoryForm({
   memoryData,
   onSaveMemory,
 }: {

@@ -1,11 +1,10 @@
 'use client'
-import { NewMemoryForm } from '@/components/NewMemoryForm'
+import { MemoryForm } from '@/components/MemoryForm'
 import { api } from '@/lib/api'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import Cookie from 'js-cookie'
 import { useSearchParams, useRouter } from 'next/navigation'
-
 import { FormEvent, useContext } from 'react'
 import { MemoriesDataContext } from '@/contexts/MemoriesData'
 
@@ -70,7 +69,7 @@ export default function EditMemory() {
         <ChevronLeft className="h-4 w-4" />
         voltar à timeline
       </Link>
-      <NewMemoryForm memoryData={memory} onSaveMemory={handleEditMemory} />
+      <MemoryForm memoryData={memory} onSaveMemory={handleEditMemory} />
     </div>
   )
 }

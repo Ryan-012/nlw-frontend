@@ -25,12 +25,11 @@ export default function UserPage() {
           },
         })
 
-        console.log(response.data)
         setUser(response.data)
         setMemoriesData(response.data.memories)
       } catch (error) {
         console.log(error)
-        return router.push('/error?statusCode=404')
+        router.push('/error?statusCode=404')
       }
     }
     if (token) fetchUser()
@@ -40,7 +39,7 @@ export default function UserPage() {
 
   return (
     <>
-      <div className="flex space-x-3  p-3 ">
+      <div className="flex space-x-3 p-3  font-alt ">
         <Image
           src={user?.avatarUrl}
           height={200}
@@ -49,9 +48,13 @@ export default function UserPage() {
           className="h-16 w-16 rounded-lg"
         />
 
-        <div className="flex flex-col">
+        <div className="flex flex-grow flex-col ">
           <span className=" text-2xl ">{user.name}</span>
           <span className="text-gray-400">{user.login}</span>
+        </div>
+        <div className=" flex flex-col items-center">
+          <h1 className="text-2xl">{memoriesData.length}</h1>
+          <span className="text-gray-400">memórias</span>
         </div>
       </div>
 

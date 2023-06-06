@@ -1,5 +1,5 @@
 'use client'
-import { NewMemoryForm } from '@/components/NewMemoryForm'
+import { MemoryForm } from '@/components/MemoryForm'
 import { api } from '@/lib/api'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
@@ -17,7 +17,7 @@ export default function NewMemory() {
 
     const formData = new FormData(event.currentTarget)
 
-    const fileToUpload = formData.get('coverUrl')
+    const fileToUpload = formData.get('coverUrl') as File
 
     let coverUrl = ''
 
@@ -63,7 +63,7 @@ export default function NewMemory() {
         voltar à timeline
       </Link>
 
-      <NewMemoryForm onSaveMemory={handleCreateMemory} />
+      <MemoryForm onSaveMemory={handleCreateMemory} />
     </div>
   )
 }
