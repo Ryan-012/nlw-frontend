@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import nlwLogo from '../assets/nlw-spacetime-logo.svg'
+import nlwLogo from '../../assets/nlw-spacetime-logo.svg'
 import Link from 'next/link'
 
 export function Hero() {
@@ -7,11 +7,11 @@ export function Hero() {
     <div className="space-y-5">
       <Image src={nlwLogo} alt="NLW Spacetime" />
 
-      <div className="max-w-[420px] space-y-1">
-        <h1 className=" text-5xl font-bold leading-tight text-gray-50">
+      <div className="max-w-[420px] space-y-1 ">
+        <h1 className=" text-5xl font-bold leading-tight text-gray-50 max-sm:text-3xl">
           Sua cápsula do tempo
         </h1>
-        <p className="text-lg leading-relaxed">
+        <p className="text-lg leading-relaxed max-sm:text-base">
           Colecione momentos marcantes da sua jornada e compartilhe (se quiser)
           com o mundo!
         </p>

@@ -1,6 +1,6 @@
 'use client'
 import { Camera } from 'lucide-react'
-import { MediaPicker } from './MediaPicker'
+import { MediaPicker } from './layout/MediaPicker'
 import { FormEvent } from 'react'
 import { Memory } from '@/interfaces/Memory'
 
@@ -38,6 +38,7 @@ export function NewMemoryForm({
         <input
           type="date"
           name="createdAt"
+          max={new Date().toISOString().split('T')[0]}
           required={true}
           defaultValue={
             memoryData?.createdAt ? memoryData?.createdAt.substr(0, 10) : ''
