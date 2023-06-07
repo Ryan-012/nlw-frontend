@@ -9,6 +9,13 @@
         "Access-Control-Allow-Headers": "Authorization,Content-Type"
       },
       "methods": ["GET", "OPTIONS"]
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      },
+      "methods": ["GET"]
     }
   ]
 }
