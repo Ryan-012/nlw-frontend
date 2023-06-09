@@ -11,6 +11,16 @@
       "methods": ["GET", "OPTIONS"]
     },
     {
+      "src": "/memories/:path*",
+      "continue": true,
+      "dest": "/memories"
+    },
+    {
+      "src": "/users/:path*",
+      "continue": true,
+      "dest": "/users"
+    },
+    {
       "src": "/(.*)",
       "headers": {
         "Access-Control-Allow-Origin": "*"

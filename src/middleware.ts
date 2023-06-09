@@ -15,6 +15,6 @@ export function middleware(req: NextRequest) {
   return NextResponse.next()
 }
 
-// export const config = {
-//   matcher: ['/memories/:path*', '/users/:path*'],
-// }
+export const config = {
+  matcher: ['/memories/:path*', '/users/:path*'],
+}
