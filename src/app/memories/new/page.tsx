@@ -26,8 +26,8 @@ export default function NewMemory() {
       uploadFormData.set('file', fileToUpload)
 
       const uploadResponse = await api.post('/upload', uploadFormData)
-
-      coverUrl = uploadResponse.data
+      const { objectKey, fileUrl } = uploadResponse.data
+      coverUrl = fileUrl
 
       const token = Cookie.get('token')
       await api
@@ -35,6 +35,7 @@ export default function NewMemory() {
           '/memories',
           {
             coverUrl,
+            objectKey,
             content: formData.get('content'),
             isPublic: formData.get('isPublic'),
             createdAt: formData.get('createdAt'),

@@ -27,7 +27,8 @@ export function MemoryContent({ memoryId, memoryData }: MemoryModalProps) {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(() => {
+      .then(async () => {
+        await api.delete(`/deleteImage/${memory?.objectKey}`)
         deleteMemory(memoryId)
       })
   }

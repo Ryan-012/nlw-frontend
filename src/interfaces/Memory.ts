@@ -6,6 +6,7 @@ export interface Memory {
   coverUrl: string
   excerpt: string
   content: string
+  objectKey: string
   isPublic: boolean
   createdAt: string
   likes: Like[]

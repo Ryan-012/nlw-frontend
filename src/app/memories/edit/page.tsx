@@ -24,15 +24,24 @@ export default function EditMemory() {
 
     const fileToUpload = formData.get('coverUrl') as File
 
-    let coverUrl = ''
+    let coverUrl = null
+    let imageKey = null
 
     if (fileToUpload) {
       const uploadFormData = new FormData()
       uploadFormData.set('file', fileToUpload)
 
       if (fileToUpload?.size > 0) {
+        // create new image on aws
         const uploadResponse = await api.post('/upload', uploadFormData)
-        coverUrl = uploadResponse.data
+
+        // set new image props
+        const { objectKey, fileUrl } = uploadResponse.data
+        coverUrl = fileUrl
+        imageKey = objectKey
+
+        // delete old image on aws
+        await api.delete(`/deleteImage/${memory?.objectKey}`)
       }
 
       if (memoryId) {
@@ -40,7 +49,8 @@ export default function EditMemory() {
           .put(
             `/memories/${memoryId}`,
             {
-              coverUrl: coverUrl === '' ? memory?.coverUrl : coverUrl,
+              coverUrl: coverUrl || memory?.coverUrl,
+              objectKey: imageKey || memory?.objectKey,
               content: formData.get('content'),
               isPublic: formData.get('isPublic'),
               createdAt: formData.get('createdAt'),
