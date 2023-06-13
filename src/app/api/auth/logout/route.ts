@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
-  const redirectURL = new URL('/', 'https://main.d3dn7d96quisvt.amplifyapp.com')
+  const redirectURL = new URL('/', process.env.NEXT_PUBLIC_URL)
 
   return NextResponse.redirect(redirectURL, {
     headers: {
