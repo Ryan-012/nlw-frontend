@@ -16,5 +16,17 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/memories/:path*', '/users/:path*'],
+  middleware: async () => {
+    return {
+      matcher: (req: NextRequest) => {
+        if (req.nextUrl.pathname === '/') {
+          return false // Não executar o middleware para a rota raiz
+        }
+
+        return ['/memories/:path*', '/users/:path*'].some((pattern) =>
+          req.nextUrl.pathname.startsWith(pattern),
+        )
+      },
+    }
+  },
 }
