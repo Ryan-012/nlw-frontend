@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { MemoriesDataContext } from '@/contexts/MemoriesData'
 
 export default function NewMemory() {
+  const token = Cookie.get('token')
   const router = useRouter()
   const { addMemory } = useContext(MemoriesDataContext)
 
@@ -29,7 +30,6 @@ export default function NewMemory() {
       const { objectKey, fileUrl } = uploadResponse.data
       coverUrl = fileUrl
 
-      const token = Cookie.get('token')
       await api
         .post(
           '/memories',
