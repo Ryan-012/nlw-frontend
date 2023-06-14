@@ -7,12 +7,12 @@ export function middleware(req: NextRequest) {
   if (!token) {
     return NextResponse.redirect(signInURL, {
       headers: {
-        'Set-Cookie': `redirectTo=${process.env.NEXT_PUBLIC_URL}; Path=/; HttpOnly; max-age=50`,
+        'Set-Cookie': `redirectTo=${process.env.NEXT_PUBLIC_URL}${req.nextUrl.pathname}; Path=/; HttpOnly; max-age=50`,
       },
     })
   }
 
-  return NextResponse.next().headers.set('Access-Control-Allow-Origin', '*')
+  return NextResponse.next()
 }
 
 export const config = {
