@@ -5,17 +5,16 @@ export function middleware(req: NextRequest) {
   const token = req.cookies.get('token')?.value
 
   if (!token) {
-    if (
-      req.nextUrl.pathname.startsWith('/memories') ||
-      req.nextUrl.pathname.startsWith('/users')
-    ) {
-      return NextResponse.redirect(signInURL, {
-        headers: {
-          'Set-Cookie': `redirectTo=${process.env.NEXT_PUBLIC_URL}; Path=/; HttpOnly; max-age=50`,
-        },
-      })
-    }
+    return NextResponse.redirect(signInURL, {
+      headers: {
+        'Set-Cookie': `redirectTo=${process.env.NEXT_PUBLIC_URL}; Path=/; HttpOnly; max-age=50`,
+      },
+    })
   }
 
-  NextResponse.next().headers.set('Access-Control-Allow-Origin', '*')
+  return NextResponse.next().headers.set('Access-Control-Allow-Origin', '*')
+}
+
+export const config = {
+  matcher: ['/memories/:path*', '/users/:path*'],
 }
