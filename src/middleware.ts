@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
     })
   }
 
-  return NextResponse.next()
+  return NextResponse.next().headers.append('Access-Control-Allow-Origin', '*')
 }
 
 export const config = {
