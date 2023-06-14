@@ -16,6 +16,11 @@ export function middleware(req: NextRequest) {
         },
       })
     }
+
+    return NextResponse.next().headers.append(
+      'Access-Control-Allow-Origin',
+      '*',
+    )
   }
 
   return NextResponse.next().headers.append('Access-Control-Allow-Origin', '*')
