@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
     console.log('test')
     return NextResponse.redirect(signInURL, {
       headers: {
-        'Set-Cookie': `redirectTo=${req.url}; Path=/; HttpOnly; max-age=50`,
+        'Set-Cookie': `redirectTo=${process.env.NEXT_PUBLIC_URL}; Path=/; HttpOnly; max-age=50`,
       },
     })
   }
