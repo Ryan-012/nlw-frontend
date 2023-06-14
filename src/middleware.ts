@@ -12,15 +12,11 @@ export function middleware(req: NextRequest) {
       return NextResponse.redirect(signInURL, {
         headers: {
           'Set-Cookie': `redirectTo=${process.env.NEXT_PUBLIC_URL}; Path=/; HttpOnly; max-age=50`,
-          'Access-Control-Allow-Origin': '*',
         },
       })
     }
 
-    return NextResponse.next().headers.append(
-      'Access-Control-Allow-Origin',
-      '*',
-    )
+    return NextResponse.next().headers.set('Access-Control-Allow-Origin', '*')
   }
 
   return NextResponse.next().headers.append('Access-Control-Allow-Origin', '*')
